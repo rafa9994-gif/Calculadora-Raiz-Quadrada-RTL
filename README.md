@@ -1,32 +1,29 @@
-# Projeto RTL: Calculadora de Raiz Quadrada Inteira
+Projeto de Unidade Lógico-Aritmética (ULA) e Decodificador 7 Segmentos
+🎯 Objetivo do Projeto
+Desenvolver uma Unidade Lógico/Aritmética (ULA) para processamento de operandos de 5 bits, integrada a um decodificador binário projetado para acionar displays de sete segmentos.
 
-## 🎯 Objetivo do Projeto
-Desenvolver um circuito digital capaz de calcular a raiz quadrada inteira de um número de 8 bits. O cálculo matemático foi implementado utilizando o método de subtrações sucessivas de números ímpares, descartando a necessidade de usar blocos complexos de divisão ou multiplicação em hardware.
+Este projeto foi construído focado no baixo nível de hardware, utilizando exclusivamente diagramas de blocos com portas lógicas básicas (AND, OR, XOR, etc). Nenhum componente de alto nível ou linguagem de descrição de hardware (como VHDL) foi utilizado, exigindo que até mesmo os multiplexadores fossem construídos do zero.
 
-O projeto foi inteiramente fundamentado na **Metodologia RTL (Register-Transfer Level)**, dividindo o sistema em Bloco Operacional (Datapath) e Bloco de Controle (FSM).
+⚙️ Principais Funcionalidades
+Processamento Binário: O sistema foi modelado para processar números binários positivos e negativos formatados em complemento a 2.
+Decodificador Integrado: Um circuito decodificador acoplado converte a saída de 5 bits da ULA para dois vetores de 7 bits, alimentando os displays numéricos.
+Sinalizadores de Estado (Flags): Implementação de saídas para LEDs indicadores de:
+Overflow (1 bit): Indica transbordo em operações.
+Status (1 bit): Retorna verdadeiro/falso para operações booleanas.
+Sinal (1 bit): Acende para indicar que o resultado numérico é negativo.
+🧮 Tabela de Operações da ULA
+A ULA executa as seguintes funções, controladas por um vetor seletor S de 3 bits:
 
-## ⚙️ Especificações e Arquitetura
-* **Entradas:** 
-  * `N`: Vetor de 8 bits representando o número a ser processado.
-  * `comece`: Sinal de 1 bit para iniciar a operação.
-* **Saídas:**
-  * `raiz`: Vetor de 4 bits contendo o resultado final.
-  * **Interface:** Exibição do resultado (raiz) integrada a um display de 7 segmentos.
-* **Bloco Operacional (Datapath):** Implementado em esquemático, contendo os registradores de 8 bits (`a` e `subtraendo`) e o registrador de 4 bits (`raiz`).
-* **Bloco de Controle (FSM):** Máquina de estados responsável por gerenciar as operações condicionais e o laço de repetição do algoritmo, desenvolvida em VHDL.
-
-## 🧠 Algoritmo de Hardware Implementado
-A lógica sequencial projetada segue o fluxo de estados abaixo:
-1. Aguarda o sinal de `comece`.
-2. Copia o valor da entrada (`a = N`), inicializa o `subtraendo = 1` e a `raiz = 0`.
-3. Em loop (enquanto `a >= subtraendo`), o circuito executa:
-   * `a = a - subtraendo`
-   * `subtraendo = subtraendo + 2`
-   * `raiz = raiz + 1`
-
-## 🛠️ Tecnologias e Metodologia
-* **Sistemas Digitais** e Eletrônica Digital
-* **Metodologia RTL** (Register-Transfer Level)
-* **FSM e FSMD** (Máquinas de Estados de Baixo e Alto Nível)
-* **VHDL** (para o bloco de controle)
-* Arquitetura de Hardware baseada em Esquemáticos
+Seleção (S2 S1 S0)	Operação / Função Executada
+0 0 0	F = A + B (Soma)
+0 0 1	F = A - B (Subtração)
+0 1 0	F = MAX(A, B) (Maior valor)
+0 1 1	F = 0; Status = (A <= B)
+1 0 0	F = 0; Status = 1 se A for par (0 caso contrário)
+1 1 0	F = |A - B| (Valor absoluto da subtração)
+1 1 1	F = A * 3 (Multiplicação por constante)
+🛠️ Tecnologias e Conceitos Aplicados
+Sistemas Digitais e Eletrônica Digital
+Lógica Combinacional pura
+Arquitetura de Hardware e Diagrama de Blocos
+Matemática Binária (Complemento a 2)
